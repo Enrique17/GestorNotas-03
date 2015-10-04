@@ -86,19 +86,35 @@ public class sw_InicioSecion {
 		
 		JButton btnAcceder = new JButton("Acceder");
 		btnAcceder.addActionListener(new ActionListener() {
+			int contador =0;
 			public void actionPerformed(ActionEvent arg0) {
-				if(Controlador.Usuario_Controlador.ExisteUsuario(txf_Usuario.getText(), pwf_Contraseña.getText())){
-					if(Controlador.Usuario_Controlador.AutentificacionAdmin(txf_Usuario.getText(), pwf_Contraseña.getText())){
-						sw_VistaAdmin vadmin = new sw_VistaAdmin();
-						vadmin.setVisible(true);
+
+				if(contador<3){
+					if(Controlador.Usuario_Controlador.ExisteUsuario(txf_Usuario.getText(), pwf_Contraseña.getText())){
+						if(Controlador.Usuario_Controlador.AutentificacionAdmin(txf_Usuario.getText(), pwf_Contraseña.getText())){
+							sw_VistaAdmin vadmin = new sw_VistaAdmin();
+							vadmin.setVisible(true);
+							frmAutentificacin.setVisible(false);
+							frmAutentificacin.dispose();
+						}
+						else{
+							sw_VistaDocente vdocente = new sw_VistaDocente();
+							vdocente.setVisible(true);
+							frmAutentificacin.setVisible(false);
+							frmAutentificacin.dispose();
+						}
 					}
 					else{
-						sw_VistaDocente vdocente = new sw_VistaDocente();
-						vdocente.setVisible(true);
+						
+						JOptionPane.showMessageDialog(null,"Usuario inexitente, intente nuevamente", "Error",JOptionPane.ERROR_MESSAGE);
+						contador = contador + 1;
+						
 					}
 				}
 				else{
-					JOptionPane.showMessageDialog(null,"Usuario inexitente, intente nuevamente", "Error",JOptionPane.ERROR_MESSAGE);
+					frmAutentificacin.setVisible(false);
+					frmAutentificacin.dispose();
+					JOptionPane.showMessageDialog(null,"La aplicacion ha dejado de funcionar, intentos agotados", "Error",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
